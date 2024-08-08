@@ -32,5 +32,5 @@ jobs:
         prefix: 'github.com/brokeyourbike/belmoney-api-client-go'
         coverageLocations: ./coverage.out:gocov
 
-    - uses: codecov/codecov-action@v3
+    - uses: codecov/codecov-action@v4
       continue-on-error: true
