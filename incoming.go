@@ -70,3 +70,27 @@ func (c *incomingClient) Create(ctx context.Context, transactionPayload CreateIn
 	req.DecodeTo(&data)
 	return data, c.do(ctx, req)
 }
+
+type IncomingTransactionsStatusesResponse struct {
+	HasErrors bool `json:"HasErrors"`
+	Errors    []struct {
+		ErrorCode string `json:"ErrorCode"`
+		Message   string `json:"Message"`
+	} `json:"Errors"`
+	Results []struct {
+		Reference     string   `json:"Reference"`
+		StatusID      int      `json:"StatusID"`
+		HoldReasonIDs []string `json:"HoldReasonIDs"`
+	} `json:"Results"`
+}
+
+func (c *incomingClient) Status(ctx context.Context, reference string) (data IncomingTransactionsStatusesResponse, err error) {
+	req, err := c.newRequest(ctx, http.MethodPost, "/Statuses", nil)
+	if err != nil {
+		return data, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	req.AddFormParams(map[string]string{"": reference})
+	req.DecodeTo(&data)
+	return data, c.do(ctx, req)
+}

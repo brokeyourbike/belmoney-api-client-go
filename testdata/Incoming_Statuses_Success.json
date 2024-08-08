@@ -1,0 +1,15 @@
+{
+    "Results": [
+        {
+            "Reference": "12345",
+            "StatusID": 2,
+            "HoldReasonIDs": [
+                "C"
+            ],
+            "RepairReasonID": null,
+            "RepairMessage": null
+        }
+    ],
+    "Errors": null,
+    "HasErrors": false
+}

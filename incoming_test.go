@@ -22,6 +22,9 @@ var outResponseWithErrors []byte
 //go:embed testdata/IncomingTrx_Response_Success.json
 var outResponseSuccess []byte
 
+//go:embed testdata/Incoming_Statuses_Success.json
+var incomingStatusesSuccess []byte
+
 func TestCreate_Success(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
 
@@ -67,6 +70,29 @@ func TestCreateReservedAccount_RequestErr(t *testing.T) {
 	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	_, err := client.Create(nil, belmoney.CreateIncomingTransactionPayload{}) //lint:ignore SA1012 testing failure
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "failed to create request")
+}
+
+func TestStatus_Success(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingStatusesSuccess))}
+	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
+
+	got, err := client.Status(context.TODO(), "12345")
+	require.NoError(t, err)
+
+	assert.False(t, got.HasErrors)
+	require.Equal(t, 1, len(got.Results))
+}
+
+func TestStatus_RequestErr(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	_, err := client.Status(nil, "") //lint:ignore SA1012 testing failure
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "failed to create request")
 }
