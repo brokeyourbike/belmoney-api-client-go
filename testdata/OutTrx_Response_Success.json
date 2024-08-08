@@ -1,0 +1,8 @@
+{
+    "Reference": "12345",
+    "TransferID": "678",
+    "TransferPIN": "901",
+    "StatusID": 1,
+    "Errors": null,
+    "HasErrors": false
+}

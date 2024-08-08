@@ -1,0 +1,13 @@
+{
+    "Reference": "12345",
+    "TransferID": null,
+    "TransferPIN": null,
+    "StatusID": 0,
+    "Errors": [
+        {
+            "Message": "Agency fee for rate type 1 is not defined.",
+            "ErrorCode": "TRPR006"
+        }
+    ],
+    "HasErrors": true
+}
