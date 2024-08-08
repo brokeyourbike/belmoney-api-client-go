@@ -16,10 +16,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//go:embed testdata/OutTrx_Response_WithErrors.json
+//go:embed testdata/IncomingTrx_Response_WithErrors.json
 var outResponseWithErrors []byte
 
-//go:embed testdata/OutTrx_Response_Success.json
+//go:embed testdata/IncomingTrx_Response_Success.json
 var outResponseSuccess []byte
 
 func TestCreate_Success(t *testing.T) {
@@ -28,12 +28,12 @@ func TestCreate_Success(t *testing.T) {
 	logger, hook := logrustest.NewNullLogger()
 	logger.SetLevel(logrus.DebugLevel)
 
-	client := belmoney.NewOutClient("baseurl", "token", "secret", belmoney.WithHTTPClient(mockHttpClient), belmoney.WithLogger(logger))
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient), belmoney.WithLogger(logger))
 
 	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(outResponseSuccess))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
 
-	got, err := client.Create(context.TODO(), belmoney.CreateOutTransactionPayload{})
+	got, err := client.Create(context.TODO(), belmoney.CreateIncomingTransactionPayload{})
 	require.NoError(t, err)
 
 	assert.Equal(t, 1, got.StatusID)
@@ -50,12 +50,12 @@ func TestCreate_Success(t *testing.T) {
 
 func TestCreate_Errors(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewOutClient("baseurl", "token", "secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(outResponseWithErrors))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
 
-	got, err := client.Create(context.TODO(), belmoney.CreateOutTransactionPayload{})
+	got, err := client.Create(context.TODO(), belmoney.CreateIncomingTransactionPayload{})
 	require.NoError(t, err)
 
 	assert.Equal(t, 0, got.StatusID)
@@ -64,9 +64,9 @@ func TestCreate_Errors(t *testing.T) {
 
 func TestCreateReservedAccount_RequestErr(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewOutClient("baseurl", "token", "secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
-	_, err := client.Create(nil, belmoney.CreateOutTransactionPayload{}) //lint:ignore SA1012 testing failure
+	_, err := client.Create(nil, belmoney.CreateIncomingTransactionPayload{}) //lint:ignore SA1012 testing failure
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "failed to create request")
 }

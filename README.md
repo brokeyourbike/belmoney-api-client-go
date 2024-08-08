@@ -13,11 +13,11 @@ go get -u github.com/brokeyourbike/belmoney-api-client-go
 
 ## Usage
 
-### Outgoing
+### Incoming
 
 ```go
-outClient := belmoney.NewOutClient("base_url", "client_id", "client_secret")
-outClient.Create(context.TODO(), belmoney.CreateOutTransactionPayload{})
+incomingClient := belmoney.NewIncomingClient("base_url", "client_id", "client_secret")
+incomingClient.Create(context.TODO(), belmoney.CreateOutTransactionPayload{})
 ```
 
 ## Authors

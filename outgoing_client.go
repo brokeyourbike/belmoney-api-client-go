@@ -13,13 +13,13 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type OutClient interface {
-	Create(ctx context.Context, transactionPayload CreateOutTransactionPayload) (CreateOutTransactionResponse, error)
+type IncomingClient interface {
+	Create(ctx context.Context, transactionPayload CreateIncomingTransactionPayload) (CreateIncomingTransactionResponse, error)
 }
 
-var _ OutClient = (*outClient)(nil)
+var _ IncomingClient = (*incomingClient)(nil)
 
-type outClient struct {
+type incomingClient struct {
 	client
 	baseURL string
 	token   string
@@ -27,8 +27,8 @@ type outClient struct {
 	hasher  hash.Hasher
 }
 
-func NewOutClient(baseURL, token, secret string, options ...ClientOption) *outClient {
-	c := &outClient{
+func NewIncomingClient(baseURL, token, secret string, options ...ClientOption) *incomingClient {
+	c := &incomingClient{
 		baseURL: strings.TrimSuffix(baseURL, "/"),
 		token:   token,
 		secret:  secret,
@@ -44,7 +44,7 @@ func NewOutClient(baseURL, token, secret string, options ...ClientOption) *outCl
 	return c
 }
 
-func (c *outClient) newRequest(ctx context.Context, method, url string, body interface{}) (*request, error) {
+func (c *incomingClient) newRequest(ctx context.Context, method, url string, body interface{}) (*request, error) {
 	req, err := http.NewRequestWithContext(ctx, method, c.baseURL+url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)

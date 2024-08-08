@@ -30,7 +30,7 @@ type BankAccount struct {
 	BranchName  string `json:"BranchName"`
 }
 
-type CreateOutTransactionPayload struct {
+type CreateIncomingTransactionPayload struct {
 	Reference        string `json:"Reference"`
 	TransferReasonID int    `json:"TransferReasonID"`
 	Sender           Person `json:"Sender"`
@@ -51,7 +51,7 @@ type CreateOutTransactionPayload struct {
 	} `json:"Payment"`
 }
 
-type CreateOutTransactionResponse struct {
+type CreateIncomingTransactionResponse struct {
 	Reference string `json:"Reference"`
 	StatusID  int    `json:"StatusID"`
 	HasErrors bool   `json:"HasErrors"`
@@ -61,7 +61,7 @@ type CreateOutTransactionResponse struct {
 	} `json:"Errors"`
 }
 
-func (c *outClient) Create(ctx context.Context, transactionPayload CreateOutTransactionPayload) (data CreateOutTransactionResponse, err error) {
+func (c *incomingClient) Create(ctx context.Context, transactionPayload CreateIncomingTransactionPayload) (data CreateIncomingTransactionResponse, err error) {
 	req, err := c.newRequest(ctx, http.MethodPost, "/Create", transactionPayload)
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)
