@@ -2,6 +2,8 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/brokeyourbike/belmoney-api-client-go.svg)](https://pkg.go.dev/github.com/brokeyourbike/belmoney-api-client-go)
 [![Go Report Card](https://goreportcard.com/badge/github.com/brokeyourbike/belmoney-api-client-go)](https://goreportcard.com/report/github.com/brokeyourbike/belmoney-api-client-go)
+[![Maintainability](https://api.codeclimate.com/v1/badges/321d87519cc32e2f86c5/maintainability)](https://codeclimate.com/github/brokeyourbike/belmoney-api-client-go/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/321d87519cc32e2f86c5/test_coverage)](https://codeclimate.com/github/brokeyourbike/belmoney-api-client-go/test_coverage)
 
 Belmoney Bank API Client for Go
 
