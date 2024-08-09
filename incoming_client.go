@@ -58,11 +58,6 @@ func (c *incomingClient) newRequest(ctx context.Context, method, url string, bod
 			return nil, fmt.Errorf("failed to marshal payload: %w", err)
 		}
 
-		// TODO: test this case
-		if req.Body != nil {
-			return nil, fmt.Errorf("request body already set")
-		}
-
 		req.Body = io.NopCloser(bytes.NewReader(b))
 		req.ContentLength = int64(len(b))
 		req.Header.Set("Content-Type", "application/json")
