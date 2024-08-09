@@ -19,7 +19,7 @@ go get -u github.com/brokeyourbike/belmoney-api-client-go
 
 ```go
 incomingClient := belmoney.NewIncomingClient("base_url", "client_id", "client_secret")
-incomingClient.Create(context.TODO(), belmoney.CreateOutTransactionPayload{})
+incomingClient.Status(context.TODO(), "reference")
 ```
 
 ## Authors
