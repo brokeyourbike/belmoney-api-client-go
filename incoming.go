@@ -4,10 +4,11 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 type ID struct {
-	IDType string `json:"IDType"`
+	IDType int `json:"IDType"`
 }
 
 type Person struct {
@@ -36,18 +37,18 @@ type CreateIncomingTransactionPayload struct {
 	Sender           Person `json:"Sender"`
 	Beneficiary      Person `json:"Beneficiary"`
 	AmountAndFees    struct {
-		PaymentAmount       string `json:"PaymentAmount"`
-		OriginalAmount      string `json:"OriginalAmount"`
-		Rate                string `json:"Rate"`
-		RateID              int    `json:"RateID"`
-		PayerCurrencyCode   string `json:"PayerCurrencyCode"`
-		PaymentCurrencyCode string `json:"PaymentCurrencyCode"`
+		PaymentAmount       float64 `json:"PaymentAmount"`
+		OriginalAmount      float64 `json:"OriginalAmount"`
+		Rate                float64 `json:"Rate"`
+		RateID              int     `json:"RateID"`
+		PayerCurrencyCode   string  `json:"PayerCurrencyCode"`
+		PaymentCurrencyCode string  `json:"PaymentCurrencyCode"`
 	} `json:"AmountAndFees"`
 	Payment struct {
 		PayerBranchReference string       `json:"PayerBranchReference"`
-		PaymentTypeID        string       `json:"PaymentTypeID"`
+		PaymentTypeID        int          `json:"PaymentTypeID"`
 		BankAccount          *BankAccount `json:"BankAccount,omitempty"`
-		CreationDate         string       `json:"CreationDate"`
+		CreationDate         time.Time    `json:"CreationDate"`
 	} `json:"Payment"`
 }
 
@@ -68,6 +69,7 @@ func (c *incomingClient) Create(ctx context.Context, transactionPayload CreateIn
 	}
 
 	req.DecodeTo(&data)
+	req.ExpectStatus(http.StatusOK)
 	return data, c.do(ctx, req)
 }
 
@@ -92,5 +94,6 @@ func (c *incomingClient) Status(ctx context.Context, reference string) (data Inc
 
 	req.AddFormParams(map[string]string{"": reference})
 	req.DecodeTo(&data)
+	req.ExpectStatus(http.StatusOK)
 	return data, c.do(ctx, req)
 }
