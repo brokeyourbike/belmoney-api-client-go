@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"slices"
 
 	"github.com/sirupsen/logrus"
 )
@@ -56,12 +57,8 @@ func (c *client) do(ctx context.Context, req *request) error {
 		}).Debug("belmoney.client -> response")
 	}
 
-	if resp.StatusCode >= 500 {
-		var errResponse ErrResponse
-		if err := json.Unmarshal(b, &errResponse); err != nil {
-			return fmt.Errorf("cannot decode err response: %w", err)
-		}
-		return errResponse
+	if !slices.Contains(req.expectedStatuses, resp.StatusCode) {
+		return UnexpectedResponse{Status: resp.StatusCode, Body: string(b)}
 	}
 
 	if req.decodeTo != nil {

@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestErrResponse(t *testing.T) {
-	err := belmoney.ErrResponse{Status: 200, Err: "damn!", Message: "oh no"}
-	assert.Equal(t, "status: 200 error: damn! msg: oh no", err.Error())
+func TestUnexpectedResponse(t *testing.T) {
+	resp := belmoney.UnexpectedResponse{Status: 500, Body: "I am an error."}
+	assert.Equal(t, "Unexpected response from API. Status: 500 Body: I am an error.", resp.Error())
 }
