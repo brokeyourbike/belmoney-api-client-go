@@ -1,0 +1,25 @@
+{
+    "Results": [
+        {
+            "PayerBranchID": 123,
+            "PayerBranchName": "BD: Account Deposit",
+            "Address1": "x",
+            "Address2": null,
+            "CityName": "x",
+            "StateCode": "x",
+            "CountryCode": "BD",
+            "PhoneNumber": null,
+            "PayAllCities": true,
+            "HasLocations": false,
+            "PaymentTypes": [
+                1
+            ],
+            "Currencies": [
+                "BDT"
+            ],
+            "LocationPoints": []
+        }
+    ],
+    "Errors": null,
+    "HasErrors": false
+}

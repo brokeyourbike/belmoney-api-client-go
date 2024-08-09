@@ -16,6 +16,10 @@ import (
 
 type IncomingClient interface {
 	Create(ctx context.Context, transactionPayload CreateIncomingTransactionPayload) (CreateIncomingTransactionResponse, error)
+	Status(ctx context.Context, reference string) (IncomingTransactionsStatusesResponse, error)
+	RequestCancel(ctx context.Context, reference string) (RequestCancelResponse, error)
+	RatesAndFeesList(ctx context.Context) (RatesAndFeesListResponse, error)
+	PayerNetworkList(ctx context.Context, payerId int) (PayerNetworkListResponse, error)
 }
 
 var _ IncomingClient = (*incomingClient)(nil)

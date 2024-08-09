@@ -16,14 +16,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//go:embed testdata/IncomingTrx_Response_WithErrors.json
-var outResponseWithErrors []byte
+//go:embed testdata/Incoming_Create_WithErrors.json
+var incomingCreateWithErrors []byte
 
-//go:embed testdata/IncomingTrx_Response_Success.json
-var outResponseSuccess []byte
+//go:embed testdata/Incoming_Create_Success.json
+var incomingCreateSuccess []byte
 
 //go:embed testdata/Incoming_Statuses_Success.json
 var incomingStatusesSuccess []byte
+
+//go:embed testdata/Incoming_RatesAndFeesList_Success.json
+var incomingRatesAndFeesListSuccess []byte
+
+//go:embed testdata/Incoming_PayerNetworkList_Success.json
+var incomingPayerNetworkListSuccess []byte
 
 func TestCreate_Success(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
@@ -33,7 +39,7 @@ func TestCreate_Success(t *testing.T) {
 
 	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient), belmoney.WithLogger(logger))
 
-	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(outResponseSuccess))}
+	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingCreateSuccess))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
 
 	got, err := client.Create(context.TODO(), belmoney.CreateIncomingTransactionPayload{})
@@ -55,7 +61,7 @@ func TestCreate_Errors(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
 	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
-	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(outResponseWithErrors))}
+	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingCreateWithErrors))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
 
 	got, err := client.Create(context.TODO(), belmoney.CreateIncomingTransactionPayload{})
@@ -93,6 +99,52 @@ func TestStatus_RequestErr(t *testing.T) {
 	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	_, err := client.Status(nil, "") //lint:ignore SA1012 testing failure
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "failed to create request")
+}
+
+func TestRatesAndFeesList_Success(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingRatesAndFeesListSuccess))}
+	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
+
+	got, err := client.RatesAndFeesList(context.TODO())
+	require.NoError(t, err)
+
+	assert.False(t, got.HasErrors)
+	require.Equal(t, 1, len(got.Results))
+}
+
+func TestRatesAndFeesList_RequestErr(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	_, err := client.RatesAndFeesList(nil) //lint:ignore SA1012 testing failure
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "failed to create request")
+}
+
+func TestPayerNetworkList_Success(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingPayerNetworkListSuccess))}
+	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
+
+	got, err := client.PayerNetworkList(context.TODO(), 0)
+	require.NoError(t, err)
+
+	assert.False(t, got.HasErrors)
+	require.Equal(t, 1, len(got.Results))
+}
+
+func TestPayerNetworkList_RequestErr(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	_, err := client.PayerNetworkList(nil, 0) //lint:ignore SA1012 testing failure
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "failed to create request")
 }

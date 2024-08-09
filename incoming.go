@@ -7,6 +7,14 @@ import (
 	"time"
 )
 
+type BaseReponse struct {
+	HasErrors bool `json:"HasErrors"`
+	Errors    []struct {
+		ErrorCode string `json:"ErrorCode"`
+		Message   string `json:"Message"`
+	} `json:"Errors"`
+}
+
 type ID struct {
 	IDType int `json:"IDType"`
 }
@@ -53,13 +61,9 @@ type CreateIncomingTransactionPayload struct {
 }
 
 type CreateIncomingTransactionResponse struct {
+	BaseReponse
 	Reference string `json:"Reference"`
 	StatusID  int    `json:"StatusID"`
-	HasErrors bool   `json:"HasErrors"`
-	Errors    []struct {
-		ErrorCode string `json:"ErrorCode"`
-		Message   string `json:"Message"`
-	} `json:"Errors"`
 }
 
 func (c *incomingClient) Create(ctx context.Context, transactionPayload CreateIncomingTransactionPayload) (data CreateIncomingTransactionResponse, err error) {
@@ -74,11 +78,7 @@ func (c *incomingClient) Create(ctx context.Context, transactionPayload CreateIn
 }
 
 type IncomingTransactionsStatusesResponse struct {
-	HasErrors bool `json:"HasErrors"`
-	Errors    []struct {
-		ErrorCode string `json:"ErrorCode"`
-		Message   string `json:"Message"`
-	} `json:"Errors"`
+	BaseReponse
 	Results []struct {
 		Reference     string   `json:"Reference"`
 		StatusID      int      `json:"StatusID"`
@@ -93,6 +93,96 @@ func (c *incomingClient) Status(ctx context.Context, reference string) (data Inc
 	}
 
 	req.AddFormParams(map[string]string{"": reference})
+	req.DecodeTo(&data)
+	req.ExpectStatus(http.StatusOK)
+	return data, c.do(ctx, req)
+}
+
+type requestCancelPayload struct {
+	Reference string `json:"Reference"`
+	ReasonID  int    `json:"ReasonID"` // always 0
+}
+
+type RequestCancelResponse struct {
+	BaseReponse
+	Reference string `json:"Reference"`
+}
+
+func (c *incomingClient) RequestCancel(ctx context.Context, reference string) (data RequestCancelResponse, err error) {
+	req, err := c.newRequest(ctx, http.MethodPost, "/RequestCancel", requestCancelPayload{Reference: reference})
+	if err != nil {
+		return data, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	req.DecodeTo(&data)
+	req.ExpectStatus(http.StatusOK)
+	return data, c.do(ctx, req)
+}
+
+type RatesAndFeesListResponse struct {
+	BaseReponse
+	Results []struct {
+		CountryCode         string  `json:"CountryCode"`
+		CountryName         string  `json:"CountryName"`
+		PayerID             int     `json:"PayerID"`
+		PayerName           string  `json:"PayerName"`
+		PayerBranchID       int     `json:"PayerBranchID"`
+		PayerBranchName     string  `json:"PayerBranchName"`
+		CurrencyCode        string  `json:"CurrencyCode"`
+		CurrencyTypeName    string  `json:"CurrencyTypeName"`
+		PaymentTypeID       int     `json:"PaymentTypeID"`
+		PaymentTypeName     string  `json:"PaymentTypeName"`
+		FromAmount          float64 `json:"FromAmount"`
+		ToAmount            float64 `json:"ToAmount"`
+		PercentageFee       float64 `json:"PercentageFee"`
+		FlatFee             float64 `json:"FlatFee"`
+		RateTypeID          int     `json:"RateTypeID"`
+		RateTypeDescription string  `json:"RateTypeDescription"`
+		Rate                float64 `json:"Rate"`
+		FromCurrencyCode    string  `json:"FromCurrencyCode"`
+	} `json:"Results"`
+}
+
+func (c *incomingClient) RatesAndFeesList(ctx context.Context) (data RatesAndFeesListResponse, err error) {
+	req, err := c.newRequest(ctx, http.MethodPost, "/RatesAndFeesList", nil)
+	if err != nil {
+		return data, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	req.DecodeTo(&data)
+	req.ExpectStatus(http.StatusOK)
+	return data, c.do(ctx, req)
+}
+
+type payerNetworkListPayload struct {
+	PayerID int `json:"PayerID"`
+}
+
+type PayerNetworkListResponse struct {
+	BaseReponse
+	Results []struct {
+		PayerBranchID   int      `json:"PayerBranchID"`
+		PayerBranchName string   `json:"PayerBranchName"`
+		Address1        string   `json:"Address1"`
+		Address2        string   `json:"Address2"`
+		CityName        string   `json:"CityName"`
+		StateCode       string   `json:"StateCode"`
+		CountryCode     string   `json:"CountryCode"`
+		PhoneNumber     string   `json:"PhoneNumber"`
+		PayAllCities    bool     `json:"PayAllCities"`
+		HasLocations    bool     `json:"HasLocations"`
+		PaymentTypes    []int    `json:"PaymentTypes"`
+		Currencies      []string `json:"Currencies"`
+		LocationPoints  []string `json:"LocationPoints"`
+	} `json:"Results"`
+}
+
+func (c *incomingClient) PayerNetworkList(ctx context.Context, payerID int) (data PayerNetworkListResponse, err error) {
+	req, err := c.newRequest(ctx, http.MethodPost, "/PayerNetworkList", payerNetworkListPayload{PayerID: payerID})
+	if err != nil {
+		return data, fmt.Errorf("failed to create request: %w", err)
+	}
+
 	req.DecodeTo(&data)
 	req.ExpectStatus(http.StatusOK)
 	return data, c.do(ctx, req)

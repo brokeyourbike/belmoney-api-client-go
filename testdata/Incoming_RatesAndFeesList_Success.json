@@ -1,0 +1,26 @@
+{
+    "Results": [
+        {
+            "CountryCode": "US",
+            "CountryName": "United States",
+            "PayerID": 0,
+            "PayerName": "USA ACCOUNT DEPOSIT",
+            "PayerBranchID": 123,
+            "PayerBranchName": "USA ACCOUNT DEPOSIT",
+            "CurrencyCode": "USD",
+            "CurrencyTypeName": "US Dollar",
+            "PaymentTypeID": 1,
+            "PaymentTypeName": "Account Deposit",
+            "FromAmount": 1.0000,
+            "ToAmount": 10000.0000,
+            "PercentageFee": 0.0000,
+            "FlatFee": 0.0000,
+            "RateTypeID": 1,
+            "RateTypeDescription": "Standard",
+            "Rate": 1.070000,
+            "FromCurrencyCode": "EUR"
+        }
+    ],
+    "Errors": null,
+    "HasErrors": false
+}
