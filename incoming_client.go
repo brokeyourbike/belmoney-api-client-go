@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/brokeyourbike/belmoney-api-client-go/hash"
 	"github.com/sirupsen/logrus"
@@ -72,6 +73,6 @@ func (c *incomingClient) newRequest(ctx context.Context, method, url string, bod
 	}
 
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("APIAuth %s", c.hasher.Generate()))
+	req.Header.Set("Authorization", fmt.Sprintf("APIAuth %s", c.hasher.Generate(time.Now())))
 	return NewRequest(req), nil
 }
