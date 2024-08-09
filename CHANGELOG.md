@@ -1,5 +1,16 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.1.0...v0.1.1) (2024-08-09)
+
+
+### Bug Fixes
+
+* check status ([846770c](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/846770ccbc610e2bc7c2820ebc289c38f471908c))
+* do not check ([30a488a](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/30a488a4a10136a3bcabd66e0d98b2e732045a03))
+* hash testable ([99190aa](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/99190aa085e0a964b25772ee4ba4c1d0d0aa0b4d))
+* payload ([1c4e8a6](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/1c4e8a6f8abbd7b324cac488e7fa2e7dce3fc377))
+* rename hash ([0a46a59](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/0a46a596acf87496a9eda22400cd1c24af286e05))
+
 ## 0.1.0 (2024-08-08)
 
 
