@@ -7,6 +7,16 @@ import (
 	"time"
 )
 
+type IncomingClient interface {
+	Create(ctx context.Context, transactionPayload CreateIncomingTransactionPayload) (CreateIncomingTransactionResponse, error)
+	Status(ctx context.Context, reference string) (IncomingTransactionsStatusesResponse, error)
+	Receipts(ctx context.Context, reference string) (IncomingTransactionsReceiptsResponse, error)
+	RequestCancel(ctx context.Context, reference string) (RequestCancelResponse, error)
+	AddSenderDocuments(ctx context.Context, documentsPayload AddSenderDocumentsPayload) (AddSenderDocumentsResponse, error)
+	RatesAndFeesList(ctx context.Context) (RatesAndFeesListResponse, error)
+	PayerNetworkList(ctx context.Context, payerId int) (PayerNetworkListResponse, error)
+}
+
 type BaseReponse struct {
 	HasErrors bool `json:"HasErrors"`
 	Errors    []struct {
@@ -66,7 +76,7 @@ type CreateIncomingTransactionResponse struct {
 	StatusID  int    `json:"StatusID"`
 }
 
-func (c *incomingClient) Create(ctx context.Context, transactionPayload CreateIncomingTransactionPayload) (data CreateIncomingTransactionResponse, err error) {
+func (c *client) Create(ctx context.Context, transactionPayload CreateIncomingTransactionPayload) (data CreateIncomingTransactionResponse, err error) {
 	req, err := c.newRequest(ctx, http.MethodPost, "/Create", transactionPayload)
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)
@@ -96,7 +106,7 @@ type AddSenderDocumentsResponse struct {
 	TransferID string `json:"TransferID"`
 }
 
-func (c *incomingClient) AddSenderDocuments(ctx context.Context, documentsPayload AddSenderDocumentsPayload) (data AddSenderDocumentsResponse, err error) {
+func (c *client) AddSenderDocuments(ctx context.Context, documentsPayload AddSenderDocumentsPayload) (data AddSenderDocumentsResponse, err error) {
 	req, err := c.newRequest(ctx, http.MethodPost, "/AddSenderDocuments", documentsPayload)
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)
@@ -116,7 +126,7 @@ type IncomingTransactionsStatusesResponse struct {
 	} `json:"Results"`
 }
 
-func (c *incomingClient) Status(ctx context.Context, reference string) (data IncomingTransactionsStatusesResponse, err error) {
+func (c *client) Status(ctx context.Context, reference string) (data IncomingTransactionsStatusesResponse, err error) {
 	req, err := c.newRequest(ctx, http.MethodPost, "/Statuses", nil)
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)
@@ -140,7 +150,7 @@ type IncomingTransactionsReceiptsResponse struct {
 	} `json:"Results"`
 }
 
-func (c *incomingClient) Receipts(ctx context.Context, reference string) (data IncomingTransactionsReceiptsResponse, err error) {
+func (c *client) Receipts(ctx context.Context, reference string) (data IncomingTransactionsReceiptsResponse, err error) {
 	req, err := c.newRequest(ctx, http.MethodPost, "/Receipts", nil)
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)
@@ -162,7 +172,7 @@ type RequestCancelResponse struct {
 	Reference string `json:"Reference"`
 }
 
-func (c *incomingClient) RequestCancel(ctx context.Context, reference string) (data RequestCancelResponse, err error) {
+func (c *client) RequestCancel(ctx context.Context, reference string) (data RequestCancelResponse, err error) {
 	req, err := c.newRequest(ctx, http.MethodPost, "/RequestCancel", requestCancelPayload{Reference: reference})
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)
@@ -197,7 +207,7 @@ type RatesAndFeesListResponse struct {
 	} `json:"Results"`
 }
 
-func (c *incomingClient) RatesAndFeesList(ctx context.Context) (data RatesAndFeesListResponse, err error) {
+func (c *client) RatesAndFeesList(ctx context.Context) (data RatesAndFeesListResponse, err error) {
 	req, err := c.newRequest(ctx, http.MethodPost, "/RatesAndFeesList", nil)
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)
@@ -231,7 +241,7 @@ type PayerNetworkListResponse struct {
 	} `json:"Results"`
 }
 
-func (c *incomingClient) PayerNetworkList(ctx context.Context, payerID int) (data PayerNetworkListResponse, err error) {
+func (c *client) PayerNetworkList(ctx context.Context, payerID int) (data PayerNetworkListResponse, err error) {
 	req, err := c.newRequest(ctx, http.MethodPost, "/PayerNetworkList", payerNetworkListPayload{PayerID: payerID})
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)

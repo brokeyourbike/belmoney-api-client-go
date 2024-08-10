@@ -46,7 +46,7 @@ func TestCreate_Success(t *testing.T) {
 	logger, hook := logrustest.NewNullLogger()
 	logger.SetLevel(logrus.DebugLevel)
 
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient), belmoney.WithLogger(logger))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient), belmoney.WithLogger(logger))
 
 	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingCreateSuccess))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
@@ -68,7 +68,7 @@ func TestCreate_Success(t *testing.T) {
 
 func TestCreate_Errors(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingCreateErrors))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
@@ -82,7 +82,7 @@ func TestCreate_Errors(t *testing.T) {
 
 func TestCreate_RequestErr(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	_, err := client.Create(nil, belmoney.CreateIncomingTransactionPayload{}) //lint:ignore SA1012 testing failure
 	require.Error(t, err)
@@ -91,7 +91,7 @@ func TestCreate_RequestErr(t *testing.T) {
 
 func TestAddSenderDocuments_Success(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingAddSenderDocumentsSuccess))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
@@ -105,7 +105,7 @@ func TestAddSenderDocuments_Success(t *testing.T) {
 
 func TestAddSenderDocuments_RequestErr(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	_, err := client.AddSenderDocuments(nil, belmoney.AddSenderDocumentsPayload{}) //lint:ignore SA1012 testing failure
 	require.Error(t, err)
@@ -114,7 +114,7 @@ func TestAddSenderDocuments_RequestErr(t *testing.T) {
 
 func TestStatus_Success(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingStatusesSuccess))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
@@ -128,7 +128,7 @@ func TestStatus_Success(t *testing.T) {
 
 func TestStatus_RequestErr(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	_, err := client.Status(nil, "") //lint:ignore SA1012 testing failure
 	require.Error(t, err)
@@ -137,7 +137,7 @@ func TestStatus_RequestErr(t *testing.T) {
 
 func TestReceipts_Success(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingReceiptsSuccess))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
@@ -151,7 +151,7 @@ func TestReceipts_Success(t *testing.T) {
 
 func TestReceipts_RequestErr(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	_, err := client.Receipts(nil, "") //lint:ignore SA1012 testing failure
 	require.Error(t, err)
@@ -160,7 +160,7 @@ func TestReceipts_RequestErr(t *testing.T) {
 
 func TestRatesAndFeesList_Success(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingRatesAndFeesListSuccess))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
@@ -174,7 +174,7 @@ func TestRatesAndFeesList_Success(t *testing.T) {
 
 func TestRatesAndFeesList_RequestErr(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	_, err := client.RatesAndFeesList(nil) //lint:ignore SA1012 testing failure
 	require.Error(t, err)
@@ -183,7 +183,7 @@ func TestRatesAndFeesList_RequestErr(t *testing.T) {
 
 func TestPayerNetworkList_Success(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingPayerNetworkListSuccess))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
@@ -197,7 +197,7 @@ func TestPayerNetworkList_Success(t *testing.T) {
 
 func TestPayerNetworkList_Errors(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingPayerNetworkListErrors))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
@@ -212,7 +212,7 @@ func TestPayerNetworkList_Errors(t *testing.T) {
 
 func TestPayerNetworkList_RequestErr(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
-	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+	client := belmoney.NewClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	_, err := client.PayerNetworkList(nil, 0) //lint:ignore SA1012 testing failure
 	require.Error(t, err)
