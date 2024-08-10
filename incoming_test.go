@@ -22,6 +22,9 @@ var incomingCreateErrors []byte
 //go:embed testdata/Incoming_Create_Success.json
 var incomingCreateSuccess []byte
 
+//go:embed testdata/Incoming_AddSenderDocuments_Success.json
+var incomingAddSenderDocumentsSuccess []byte
+
 //go:embed testdata/Incoming_Statuses_Success.json
 var incomingStatusesSuccess []byte
 
@@ -77,11 +80,34 @@ func TestCreate_Errors(t *testing.T) {
 	assert.True(t, got.HasErrors)
 }
 
-func TestCreateReservedAccount_RequestErr(t *testing.T) {
+func TestCreate_RequestErr(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
 	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	_, err := client.Create(nil, belmoney.CreateIncomingTransactionPayload{}) //lint:ignore SA1012 testing failure
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "failed to create request")
+}
+
+func TestAddSenderDocuments_Success(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingAddSenderDocumentsSuccess))}
+	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
+
+	got, err := client.AddSenderDocuments(context.TODO(), belmoney.AddSenderDocumentsPayload{})
+	require.NoError(t, err)
+
+	assert.Equal(t, "12345", got.TransferID)
+	assert.False(t, got.HasErrors)
+}
+
+func TestAddSenderDocuments_RequestErr(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	_, err := client.AddSenderDocuments(nil, belmoney.AddSenderDocumentsPayload{}) //lint:ignore SA1012 testing failure
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "failed to create request")
 }

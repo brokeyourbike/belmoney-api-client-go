@@ -77,6 +77,36 @@ func (c *incomingClient) Create(ctx context.Context, transactionPayload CreateIn
 	return data, c.do(ctx, req)
 }
 
+type SenderDocument struct {
+	TypeID         int    `json:"TypeID"`
+	DocumentData   string `json:"DocumentData"`
+	Description    string `json:"Description"`
+	IDNo           string `json:"IDNo"`
+	IssuedDate     string `json:"IssuedDate"`
+	ExpirationDate string `json:"ExpirationDate"`
+}
+
+type AddSenderDocumentsPayload struct {
+	TransferID string           `json:"TransferID"`
+	Documents  []SenderDocument `json:"Documents"`
+}
+
+type AddSenderDocumentsResponse struct {
+	BaseReponse
+	TransferID string `json:"TransferID"`
+}
+
+func (c *incomingClient) AddSenderDocuments(ctx context.Context, documentsPayload AddSenderDocumentsPayload) (data AddSenderDocumentsResponse, err error) {
+	req, err := c.newRequest(ctx, http.MethodPost, "/AddSenderDocuments", documentsPayload)
+	if err != nil {
+		return data, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	req.DecodeTo(&data)
+	req.ExpectStatus(http.StatusOK)
+	return data, c.do(ctx, req)
+}
+
 type IncomingTransactionsStatusesResponse struct {
 	BaseReponse
 	Results []struct {

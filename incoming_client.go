@@ -17,7 +17,9 @@ import (
 type IncomingClient interface {
 	Create(ctx context.Context, transactionPayload CreateIncomingTransactionPayload) (CreateIncomingTransactionResponse, error)
 	Status(ctx context.Context, reference string) (IncomingTransactionsStatusesResponse, error)
+	Receipts(ctx context.Context, reference string) (IncomingTransactionsReceiptsResponse, error)
 	RequestCancel(ctx context.Context, reference string) (RequestCancelResponse, error)
+	AddSenderDocuments(ctx context.Context, documentsPayload AddSenderDocumentsPayload) (AddSenderDocumentsResponse, error)
 	RatesAndFeesList(ctx context.Context) (RatesAndFeesListResponse, error)
 	PayerNetworkList(ctx context.Context, payerId int) (PayerNetworkListResponse, error)
 }
