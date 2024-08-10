@@ -25,6 +25,9 @@ var incomingCreateSuccess []byte
 //go:embed testdata/Incoming_Statuses_Success.json
 var incomingStatusesSuccess []byte
 
+//go:embed testdata/Incoming_Receipts_Success.json
+var incomingReceiptsSuccess []byte
+
 //go:embed testdata/Incoming_RatesAndFeesList_Success.json
 var incomingRatesAndFeesListSuccess []byte
 
@@ -102,6 +105,29 @@ func TestStatus_RequestErr(t *testing.T) {
 	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
 	_, err := client.Status(nil, "") //lint:ignore SA1012 testing failure
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "failed to create request")
+}
+
+func TestReceipts_Success(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingReceiptsSuccess))}
+	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
+
+	got, err := client.Receipts(context.TODO(), "12345")
+	require.NoError(t, err)
+
+	assert.False(t, got.HasErrors)
+	require.Equal(t, 1, len(got.Results))
+}
+
+func TestReceipts_RequestErr(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	_, err := client.Receipts(nil, "") //lint:ignore SA1012 testing failure
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "failed to create request")
 }

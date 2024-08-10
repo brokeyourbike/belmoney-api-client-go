@@ -98,6 +98,30 @@ func (c *incomingClient) Status(ctx context.Context, reference string) (data Inc
 	return data, c.do(ctx, req)
 }
 
+type IncomingTransactionsReceiptsResponse struct {
+	BaseReponse
+	Results []struct {
+		Reference            string `json:"Reference"`
+		Identifier           string `json:"Identifier"`
+		Note                 string `json:"Note"`
+		DocumentData         string `json:"DocumentData"`
+		DocumentDataMimeType string `json:"DocumentDataMimeType"`
+		DocumentDataFilename string `json:"DocumentDataFilename"`
+	} `json:"Results"`
+}
+
+func (c *incomingClient) Receipts(ctx context.Context, reference string) (data IncomingTransactionsReceiptsResponse, err error) {
+	req, err := c.newRequest(ctx, http.MethodPost, "/Receipts", nil)
+	if err != nil {
+		return data, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	req.AddFormParams(map[string]string{"": reference})
+	req.DecodeTo(&data)
+	req.ExpectStatus(http.StatusOK)
+	return data, c.do(ctx, req)
+}
+
 type requestCancelPayload struct {
 	Reference string `json:"Reference"`
 	ReasonID  int    `json:"ReasonID"` // always 0

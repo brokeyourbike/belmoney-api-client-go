@@ -1,0 +1,14 @@
+{
+    "Results": [
+        {
+            "Reference": "12345",
+            "Identifier": null,
+            "Note": "Receipt number: ",
+            "DocumentData": null,
+            "DocumentDataMimeType": null,
+            "DocumentDataFilename": null
+        }
+    ],
+    "Errors": null,
+    "HasErrors": false
+}
