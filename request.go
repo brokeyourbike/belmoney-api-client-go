@@ -18,10 +18,12 @@ func NewRequest(r *http.Request) *request {
 	return &request{req: r}
 }
 
+// ExpectStatus sets the expected status codes for the request.
 func (r *request) ExpectStatus(expected ...int) {
 	r.expectedStatuses = expected
 }
 
+// DecodeTo sets the target object to decode the response to.
 func (r *request) DecodeTo(to interface{}) {
 	r.decodeTo = to
 }
