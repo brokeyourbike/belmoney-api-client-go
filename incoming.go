@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 type IncomingClient interface {
@@ -68,7 +67,7 @@ type CreateIncomingTransactionPayload struct {
 		PayerBranchReference string       `json:"PayerBranchReference"`
 		PaymentTypeID        int          `json:"PaymentTypeID"`
 		BankAccount          *BankAccount `json:"BankAccount,omitempty"`
-		CreationDate         time.Time    `json:"CreationDate"`
+		CreationDate         Time         `json:"CreationDate"`
 	} `json:"Payment"`
 }
 

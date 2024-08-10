@@ -34,7 +34,103 @@ func (c *client) TransactionsList(ctx context.Context) (data TransactionsListRes
 
 type TransactionResponse struct {
 	BaseReponse
-	References []string `json:"References"`
+	Transfer struct {
+		TransferID        int    `json:"TransferID"`
+		Reference         string `json:"Reference"`
+		TransferPIN       string `json:"TransferPIN"`
+		TransConfirmation string `json:"TransConfirmation"`
+		TransferReasonID  int    `json:"TransferReasonID"`
+		Sender            struct {
+			AgencyReference        string `json:"AgencyReference"`
+			FirstName              string `json:"FirstName"`
+			MiddleName             string `json:"MiddleName"`
+			LastName               string `json:"LastName"`
+			SecondLastName         string `json:"SecondLastName"`
+			Address1               string `json:"Address1"`
+			CountryCode            string `json:"CountryCode"`
+			StateCode              string `json:"StateCode"`
+			StateName              string `json:"StateName"`
+			CityCode               int    `json:"CityCode"`
+			CityName               string `json:"CityName"`
+			ZipCode                string `json:"ZipCode"`
+			DOB                    Time   `json:"DOB"`
+			PhoneNumber            string `json:"PhoneNumber"`
+			CellPhoneNumber        string `json:"CellPhoneNumber"`
+			PrimaryPhoneNumber     string `json:"PrimaryPhoneNumber"`
+			PhoneNumberCountryCode string `json:"PhoneNumberCountryCode"`
+			Email                  string `json:"Email"`
+			Sex                    string `json:"Sex"`
+			BirthCityName          string `json:"BirthCityName"`
+			BirthCountryCode       string `json:"BirthCountryCode"`
+			CitizenshipCountryCode string `json:"CitizenshipCountryCode"`
+			ProfessionID           int    `json:"ProfessionID"`
+			PEPTypeID              int    `json:"PEPTypeID"`
+			SenderTypeID           int    `json:"SenderTypeID"`
+			IDs                    []struct {
+				IDIssuedDate      Time   `json:"IDIssuedDate"`
+				IDExpirationDate  Time   `json:"IDExpirationDate"`
+				IssuedCountryCode string `json:"IssuedCountryCode"`
+				Authority         string `json:"Authority"`
+				IDCopy            bool   `json:"IDCopy"`
+				IDType            int    `json:"IDType"`
+				IDNo              string `json:"IDNo"`
+			} `json:"IDs"`
+			Documents interface{} `json:"Documents"`
+		} `json:"Sender"`
+		Beneficiary struct {
+			AgencyReference        string `json:"AgencyReference"`
+			FirstName              string `json:"FirstName"`
+			MiddleName             string `json:"MiddleName"`
+			LastName               string `json:"LastName"`
+			SecondLastName         string `json:"SecondLastName"`
+			Address1               string `json:"Address1"`
+			CountryCode            string `json:"CountryCode"`
+			StateCode              string `json:"StateCode"`
+			CityCode               int    `json:"CityCode"`
+			CityName               string `json:"CityName"`
+			ZipCode                string `json:"ZipCode"`
+			PhoneNumber            string `json:"PhoneNumber"`
+			CellPhoneNumber        string `json:"CellPhoneNumber"`
+			PrimaryPhoneNumber     string `json:"PrimaryPhoneNumber"`
+			Email                  string `json:"Email"`
+			RelationshipToSenderID int    `json:"RelationshipToSenderID"`
+			IDs                    []struct {
+				IDCopy bool   `json:"IDCopy"`
+				IDType int    `json:"IDType"`
+				IDNo   string `json:"IDNo"`
+			} `json:"IDs"`
+		} `json:"Beneficiary"`
+		AmountAndFees struct {
+			PaymentAmount       float64 `json:"PaymentAmount"`
+			PaymentCurrencyCode string  `json:"PaymentCurrencyCode"`
+			OriginalAmount      float64 `json:"OriginalAmount"`
+			Rate                float64 `json:"Rate"`
+			RateID              int     `json:"RateID"`
+			PayerCurrencyCode   string  `json:"PayerCurrencyCode"`
+			PercentFee          float64 `json:"PercentFee"`
+			FlatFee             float64 `json:"FlatFee"`
+			OtherFee            float64 `json:"OtherFee"`
+			Tax                 float64 `json:"Tax"`
+			FeesTax             float64 `json:"FeesTax"`
+			Discount            float64 `json:"Discount"`
+		} `json:"AmountAndFees"`
+		Payment struct {
+			PayerBranchReference string `json:"PayerBranchReference"`
+			PaymentTypeID        int    `json:"PaymentTypeID"`
+			LocationCode         string `json:"LocationCode"`
+			BankAccount          struct {
+				Code        string `json:"Code"`
+				Name        string `json:"Name"`
+				BranchCode  string `json:"BranchCode"`
+				BranchName  string `json:"BranchName"`
+				AccountType int    `json:"AccountType"`
+				AccountNo   string `json:"AccountNo"`
+			} `json:"BankAccount"`
+		} `json:"Payment"`
+		TransferPayment interface{} `json:"TransferPayment"`
+		Notes           string      `json:"Notes"`
+		CreationDate    Time        `json:"CreationDate"`
+	} `json:"Transfer"`
 }
 
 func (c *client) Transaction(ctx context.Context, reference string) (data TransactionResponse, err error) {
