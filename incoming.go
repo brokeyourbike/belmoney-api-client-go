@@ -17,6 +17,8 @@ type IncomingClient interface {
 	PayerNetworkList(ctx context.Context, payerId int) (PayerNetworkListResponse, error)
 }
 
+var _ IncomingClient = (*client)(nil)
+
 type BaseReponse struct {
 	HasErrors bool `json:"HasErrors"`
 	Errors    []struct {
@@ -162,17 +164,17 @@ func (c *client) Receipts(ctx context.Context, reference string) (data IncomingT
 	return data, c.do(ctx, req)
 }
 
-type requestCancelPayload struct {
-	Reference string `json:"Reference"`
-	ReasonID  int    `json:"ReasonID"` // always 0
-}
-
 type RequestCancelResponse struct {
 	BaseReponse
 	Reference string `json:"Reference"`
 }
 
 func (c *client) RequestCancel(ctx context.Context, reference string) (data RequestCancelResponse, err error) {
+	type requestCancelPayload struct {
+		Reference string `json:"Reference"`
+		ReasonID  int    `json:"ReasonID"` // always 0
+	}
+
 	req, err := c.newRequest(ctx, http.MethodPost, "/RequestCancel", requestCancelPayload{Reference: reference})
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)
@@ -218,10 +220,6 @@ func (c *client) RatesAndFeesList(ctx context.Context) (data RatesAndFeesListRes
 	return data, c.do(ctx, req)
 }
 
-type payerNetworkListPayload struct {
-	PayerID int `json:"PayerID"`
-}
-
 type PayerNetworkListResponse struct {
 	BaseReponse
 	Results []struct {
@@ -242,6 +240,10 @@ type PayerNetworkListResponse struct {
 }
 
 func (c *client) PayerNetworkList(ctx context.Context, payerID int) (data PayerNetworkListResponse, err error) {
+	type payerNetworkListPayload struct {
+		PayerID int `json:"PayerID"`
+	}
+
 	req, err := c.newRequest(ctx, http.MethodPost, "/PayerNetworkList", payerNetworkListPayload{PayerID: payerID})
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)

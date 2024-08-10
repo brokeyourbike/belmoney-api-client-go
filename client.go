@@ -19,13 +19,6 @@ type HttpClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-type Client interface {
-	IncomingClient
-	OutgoingClient
-}
-
-var _ Client = (*client)(nil)
-
 type client struct {
 	baseURL    string
 	token      string
