@@ -1,0 +1,10 @@
+{
+    "Results": null,
+    "Errors": [
+        {
+            "Message": "The payer ID is not valid.",
+            "ErrorCode": "TRPR999"
+        }
+    ],
+    "HasErrors": true
+}

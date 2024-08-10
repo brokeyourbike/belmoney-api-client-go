@@ -16,8 +16,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//go:embed testdata/Incoming_Create_WithErrors.json
-var incomingCreateWithErrors []byte
+//go:embed testdata/Incoming_Create_Errors.json
+var incomingCreateErrors []byte
 
 //go:embed testdata/Incoming_Create_Success.json
 var incomingCreateSuccess []byte
@@ -30,6 +30,9 @@ var incomingRatesAndFeesListSuccess []byte
 
 //go:embed testdata/Incoming_PayerNetworkList_Success.json
 var incomingPayerNetworkListSuccess []byte
+
+//go:embed testdata/Incoming_PayerNetworkList_Errors.json
+var incomingPayerNetworkListErrors []byte
 
 func TestCreate_Success(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
@@ -61,7 +64,7 @@ func TestCreate_Errors(t *testing.T) {
 	mockHttpClient := belmoney.NewMockHttpClient(t)
 	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
 
-	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingCreateWithErrors))}
+	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingCreateErrors))}
 	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
 
 	got, err := client.Create(context.TODO(), belmoney.CreateIncomingTransactionPayload{})
@@ -138,6 +141,21 @@ func TestPayerNetworkList_Success(t *testing.T) {
 
 	assert.False(t, got.HasErrors)
 	require.Equal(t, 1, len(got.Results))
+}
+
+func TestPayerNetworkList_Errors(t *testing.T) {
+	mockHttpClient := belmoney.NewMockHttpClient(t)
+	client := belmoney.NewIncomingClient("baseurl", "client_id", "client_secret", belmoney.WithHTTPClient(mockHttpClient))
+
+	resp := &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(bytes.NewReader(incomingPayerNetworkListErrors))}
+	mockHttpClient.On("Do", mock.AnythingOfType("*http.Request")).Return(resp, nil).Once()
+
+	got, err := client.PayerNetworkList(context.TODO(), 0)
+	require.NoError(t, err)
+
+	assert.True(t, got.HasErrors)
+	require.Equal(t, 1, len(got.Errors))
+	require.Equal(t, 0, len(got.Results))
 }
 
 func TestPayerNetworkList_RequestErr(t *testing.T) {
