@@ -67,8 +67,8 @@ type TransactionResponse struct {
 			PEPTypeID              int    `json:"PEPTypeID"`
 			SenderTypeID           int    `json:"SenderTypeID"`
 			IDs                    []struct {
-				IDIssuedDate      Time   `json:"IDIssuedDate"`
-				IDExpirationDate  Time   `json:"IDExpirationDate"`
+				IDIssuedDate      *Time  `json:"IDIssuedDate"`
+				IDExpirationDate  *Time  `json:"IDExpirationDate"`
 				IssuedCountryCode string `json:"IssuedCountryCode"`
 				Authority         string `json:"Authority"`
 				IDCopy            bool   `json:"IDCopy"`
