@@ -15,7 +15,7 @@ go get -u github.com/brokeyourbike/belmoney-api-client-go
 
 ## Usage
 
-### Incoming
+### Client
 
 ```go
 client := belmoney.NewClient("base_url", "client_id", "client_secret")
