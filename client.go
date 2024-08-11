@@ -48,14 +48,14 @@ func NewClient(baseURL, token, secret string, options ...ClientOption) *client {
 // ClientOption is a function that configures a Client.
 type ClientOption func(*client)
 
-// WithHTTPClient sets the HTTP client for the paystack API client.
+// WithHTTPClient sets the HTTP client for the API client.
 func WithHTTPClient(c HttpClient) ClientOption {
 	return func(target *client) {
 		target.httpClient = c
 	}
 }
 
-// WithLogger sets the *logrus.Logger for the paystack API client.
+// WithLogger sets the *logrus.Logger for the API client.
 func WithLogger(l *logrus.Logger) ClientOption {
 	return func(target *client) {
 		target.logger = l
