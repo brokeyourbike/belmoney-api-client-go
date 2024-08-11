@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.1.0...v0.2.0) (2024-08-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* use one client
+
+### Features
+
+* add docs ([0823c74](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/0823c74fd8ec67bae71b816096d97f077a40c49a))
+* more requests ([1091238](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/1091238aeaec6ca0f91160def69cd367c251a3ec))
+* outgoing client ([0e9182e](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/0e9182e5e947ad581c54a269c7aa1cf299462dbb))
+* receipts ([4b1e74a](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/4b1e74ae26d201c57e82332e4365fbcdab857831))
+* trx ([489a688](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/489a688185e57d00f0fe64477b2fa8bad6c3a98c))
+
+
+### Bug Fixes
+
+* check status ([846770c](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/846770ccbc610e2bc7c2820ebc289c38f471908c))
+* do not check ([30a488a](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/30a488a4a10136a3bcabd66e0d98b2e732045a03))
+* do not combine interfaces ([209ab62](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/209ab62a7a60f738495fe321114848e8322a57db))
+* example ([cb4ea6b](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/cb4ea6b6f3600c4d894870dc62d83bc8af9a963a))
+* hash testable ([99190aa](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/99190aa085e0a964b25772ee4ba4c1d0d0aa0b4d))
+* nil time ([5ccd372](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/5ccd372d601ec4fdccc872162efb08ef0bdc888b))
+* payload ([1c4e8a6](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/1c4e8a6f8abbd7b324cac488e7fa2e7dce3fc377))
+* rename hash ([0a46a59](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/0a46a596acf87496a9eda22400cd1c24af286e05))
+* use one client ([71ae9a1](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/71ae9a11f576184bbfac473d662ff10c4c600f38))
+
 ## [0.2.0](https://github.com/brokeyourbike/belmoney-api-client-go/compare/v0.1.0...v0.2.0) (2024-08-10)
 
 
