@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.0.0](https://github.com/brokeyourbike/belmoney-api-client-go/compare/v0.2.0...v1.0.0) (2024-08-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* use one client
+
+### Features
+
+* outgoing client ([0e9182e](https://github.com/brokeyourbike/belmoney-api-client-go/commit/0e9182e5e947ad581c54a269c7aa1cf299462dbb))
+* trx ([489a688](https://github.com/brokeyourbike/belmoney-api-client-go/commit/489a688185e57d00f0fe64477b2fa8bad6c3a98c))
+
+
+### Bug Fixes
+
+* do not combine interfaces ([209ab62](https://github.com/brokeyourbike/belmoney-api-client-go/commit/209ab62a7a60f738495fe321114848e8322a57db))
+* nil time ([5ccd372](https://github.com/brokeyourbike/belmoney-api-client-go/commit/5ccd372d601ec4fdccc872162efb08ef0bdc888b))
+* use one client ([71ae9a1](https://github.com/brokeyourbike/belmoney-api-client-go/commit/71ae9a11f576184bbfac473d662ff10c4c600f38))
+
 ## [0.2.0](https://github.com/brokeyourbike/belmoney-api-client-go/compare/v0.1.0...v0.2.0) (2024-08-10)
 
 
