@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.3.0...v0.3.1) (2024-08-12)
+
+
+### Bug Fixes
+
+* remove points ([7b90950](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/7b90950e5e4d7b0fcfd14ca804050a5254444628))
+
 ## [0.3.0](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.2.1...v0.3.0) (2024-08-12)
 
 
