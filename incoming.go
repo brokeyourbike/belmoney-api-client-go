@@ -73,8 +73,10 @@ type CreateIncomingTransactionPayload struct {
 
 type CreateIncomingTransactionResponse struct {
 	BaseReponse
-	Reference string `json:"Reference"`
-	StatusID  int    `json:"StatusID"`
+	Reference   string `json:"Reference"`
+	TransferPIN string `json:"TransferPIN"`
+	TransferID  string `json:"TransferID"`
+	StatusID    int    `json:"StatusID"`
 }
 
 func (c *client) Create(ctx context.Context, transactionPayload CreateIncomingTransactionPayload) (data CreateIncomingTransactionResponse, err error) {

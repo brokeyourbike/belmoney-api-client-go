@@ -55,6 +55,7 @@ func TestCreate_Success(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, 1, got.StatusID)
+	assert.Equal(t, "901", got.TransferPIN)
 	assert.False(t, got.HasErrors)
 
 	require.Equal(t, 2, len(hook.Entries))
