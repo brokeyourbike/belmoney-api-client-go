@@ -236,7 +236,6 @@ type PayerNetworkListResponse struct {
 		HasLocations    bool     `json:"HasLocations"`
 		PaymentTypes    []int    `json:"PaymentTypes"`
 		Currencies      []string `json:"Currencies"`
-		LocationPoints  []string `json:"LocationPoints"`
 	} `json:"Results"`
 }
 
