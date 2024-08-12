@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.2.1...v0.3.0) (2024-08-12)
+
+
+### Features
+
+* transfer pin and id ([71c06f7](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/71c06f76330d6da597af453ca2ecc892808fa7a2))
+
 ### [0.2.1](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.2.0...v0.2.1) (2024-08-11)
 
 
