@@ -54,7 +54,7 @@ func TestCreate_Success(t *testing.T) {
 	got, err := client.Create(context.TODO(), belmoney.CreateIncomingTransactionPayload{})
 	require.NoError(t, err)
 
-	assert.Equal(t, 1, got.StatusID)
+	assert.Equal(t, belmoney.StatusIdCreated, got.StatusID)
 	assert.Equal(t, "901", got.TransferPIN)
 	assert.False(t, got.HasErrors)
 
@@ -77,7 +77,7 @@ func TestCreate_Errors(t *testing.T) {
 	got, err := client.Create(context.TODO(), belmoney.CreateIncomingTransactionPayload{})
 	require.NoError(t, err)
 
-	assert.Equal(t, 0, got.StatusID)
+	assert.Equal(t, belmoney.StatusId(0), got.StatusID)
 	assert.True(t, got.HasErrors)
 }
 
