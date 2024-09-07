@@ -27,7 +27,7 @@ type BaseReponse struct {
 }
 
 type ID struct {
-	IDType int `json:"IDType"`
+	IDType PersonIdType `json:"IDType"`
 }
 
 type Person struct {
@@ -43,40 +43,40 @@ type Person struct {
 }
 
 type BankAccount struct {
-	AccountType int    `json:"AccountType"`
-	Code        string `json:"Code"`
-	AccountNo   string `json:"AccountNo"`
-	Name        string `json:"Name"`
-	BranchName  string `json:"BranchName"`
+	AccountType AccountTypeId `json:"AccountType"`
+	Code        string        `json:"Code"`
+	AccountNo   string        `json:"AccountNo"`
+	Name        string        `json:"Name"`
+	BranchName  string        `json:"BranchName"`
 }
 
 type CreateIncomingTransactionPayload struct {
-	Reference        string `json:"Reference"`
-	TransferReasonID int    `json:"TransferReasonID"`
-	Sender           Person `json:"Sender"`
-	Beneficiary      Person `json:"Beneficiary"`
+	Reference        string           `json:"Reference"`
+	TransferReasonID TransferReasonId `json:"TransferReasonID"`
+	Sender           Person           `json:"Sender"`
+	Beneficiary      Person           `json:"Beneficiary"`
 	AmountAndFees    struct {
-		PaymentAmount       float64 `json:"PaymentAmount"`
-		OriginalAmount      float64 `json:"OriginalAmount"`
-		Rate                float64 `json:"Rate"`
-		RateID              int     `json:"RateID"`
-		PayerCurrencyCode   string  `json:"PayerCurrencyCode"`
-		PaymentCurrencyCode string  `json:"PaymentCurrencyCode"`
+		PaymentAmount       float64    `json:"PaymentAmount"`
+		OriginalAmount      float64    `json:"OriginalAmount"`
+		Rate                float64    `json:"Rate"`
+		RateID              RateTypeId `json:"RateID"`
+		PayerCurrencyCode   string     `json:"PayerCurrencyCode"`
+		PaymentCurrencyCode string     `json:"PaymentCurrencyCode"`
 	} `json:"AmountAndFees"`
 	Payment struct {
-		PayerBranchReference string       `json:"PayerBranchReference"`
-		PaymentTypeID        int          `json:"PaymentTypeID"`
-		BankAccount          *BankAccount `json:"BankAccount,omitempty"`
-		CreationDate         Time         `json:"CreationDate"`
+		PayerBranchReference string        `json:"PayerBranchReference"`
+		PaymentTypeID        PaymentTypeId `json:"PaymentTypeID"`
+		BankAccount          *BankAccount  `json:"BankAccount,omitempty"`
+		CreationDate         Time          `json:"CreationDate"`
 	} `json:"Payment"`
 }
 
 type CreateIncomingTransactionResponse struct {
 	BaseReponse
-	Reference   string `json:"Reference"`
-	TransferPIN string `json:"TransferPIN"`
-	TransferID  string `json:"TransferID"`
-	StatusID    int    `json:"StatusID"`
+	Reference   string   `json:"Reference"`
+	TransferPIN string   `json:"TransferPIN"`
+	TransferID  string   `json:"TransferID"`
+	StatusID    StatusId `json:"StatusID"`
 }
 
 func (c *client) Create(ctx context.Context, transactionPayload CreateIncomingTransactionPayload) (data CreateIncomingTransactionResponse, err error) {
@@ -91,12 +91,12 @@ func (c *client) Create(ctx context.Context, transactionPayload CreateIncomingTr
 }
 
 type SenderDocument struct {
-	TypeID         int    `json:"TypeID"`
-	DocumentData   string `json:"DocumentData"`
-	Description    string `json:"Description"`
-	IDNo           string `json:"IDNo"`
-	IssuedDate     string `json:"IssuedDate"`
-	ExpirationDate string `json:"ExpirationDate"`
+	TypeID         DocumentTypeId `json:"TypeID"`
+	DocumentData   string         `json:"DocumentData"`
+	Description    string         `json:"Description"`
+	IDNo           string         `json:"IDNo"`
+	IssuedDate     string         `json:"IssuedDate"`
+	ExpirationDate string         `json:"ExpirationDate"`
 }
 
 type AddSenderDocumentsPayload struct {
@@ -124,7 +124,7 @@ type IncomingTransactionsStatusesResponse struct {
 	BaseReponse
 	Results []struct {
 		Reference     string   `json:"Reference"`
-		StatusID      int      `json:"StatusID"`
+		StatusID      StatusId `json:"StatusID"`
 		HoldReasonIDs []string `json:"HoldReasonIDs"`
 	} `json:"Results"`
 }
@@ -172,8 +172,8 @@ type RequestCancelResponse struct {
 
 func (c *client) RequestCancel(ctx context.Context, reference string) (data RequestCancelResponse, err error) {
 	type requestCancelPayload struct {
-		Reference string `json:"Reference"`
-		ReasonID  int    `json:"ReasonID"` // always 0
+		Reference string         `json:"Reference"`
+		ReasonID  CancelReasonId `json:"ReasonID"` // always 0
 	}
 
 	req, err := c.newRequest(ctx, http.MethodPost, "/RequestCancel", requestCancelPayload{Reference: reference})
