@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.4.0...v0.4.1) (2024-09-07)
+
+
+### Bug Fixes
+
+* standard rate ([3925b94](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/3925b94a55cb37c2d855cf1a56ceef1cd32858e0))
+
 ## [0.4.0](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.3.1...v0.4.0) (2024-09-07)
 
 
