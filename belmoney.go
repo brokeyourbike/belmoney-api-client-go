@@ -99,7 +99,7 @@ const (
 type RateTypeId int
 
 const (
-	RateTypeIdGeneral RateTypeId = 0
+	RateTypeIdStandard RateTypeId = 1
 )
 
 type TransferReasonId int
