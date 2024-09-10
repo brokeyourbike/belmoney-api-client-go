@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.2](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.4.1...v0.4.2) (2024-09-10)
+
+
+### Bug Fixes
+
+* use k v ([a5eea9c](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/a5eea9c32879f585602958c42218c6fd17bcc274))
+
 ### [0.4.1](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.4.0...v0.4.1) (2024-09-07)
 
 
