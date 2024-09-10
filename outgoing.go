@@ -132,7 +132,7 @@ type TransactionResponse struct {
 }
 
 func (c *client) Transaction(ctx context.Context, reference string) (data TransactionResponse, err error) {
-	req, err := c.newRequest(ctx, http.MethodGet, fmt.Sprintf("/NewList/%s", reference), nil)
+	req, err := c.newRequest(ctx, http.MethodGet, fmt.Sprintf("/New/%s", reference), nil)
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)
 	}
