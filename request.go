@@ -31,8 +31,8 @@ func (r *request) DecodeTo(to interface{}) {
 // AddFormParams adds multiple form parameters to the request.
 func (r *request) AddFormParams(params map[string]string) {
 	formData := url.Values{}
-	for _, k := range params {
-		formData.Add(k, params[k])
+	for k, v := range params {
+		formData.Add(k, v)
 	}
 
 	r.req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
