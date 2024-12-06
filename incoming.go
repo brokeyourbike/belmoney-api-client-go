@@ -27,7 +27,13 @@ type BaseReponse struct {
 }
 
 type ID struct {
-	IDType PersonIdType `json:"IDType"`
+	IDType            PersonIdType `json:"IDType"`
+	IDCopy            bool         `json:"IDCopy,omitempty"`
+	IDNo              string       `json:"IDNo,omitempty"`
+	Authority         string       `json:"Authority,omitempty"`
+	IssuedCountryCode string       `json:"IssuedCountryCode,omitempty"`
+	IDIssuedDate      string       `json:"IDIssuedDate,omitempty"`
+	IDExpirationDate  string       `json:"IDExpirationDate,omitempty"`
 }
 
 type Person struct {
