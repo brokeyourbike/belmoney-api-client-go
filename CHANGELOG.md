@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.5.1...v0.6.0) (2024-12-19)
+
+
+### Features
+
+* more data ([8ce30c2](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/8ce30c2548ef9bbe705bf8bfb23b05b3f8151207))
+
 ### [0.5.1](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.5.0...v0.5.1) (2024-12-06)
 
 
