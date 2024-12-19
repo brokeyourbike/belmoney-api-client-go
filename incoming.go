@@ -36,23 +36,46 @@ type ID struct {
 	IDExpirationDate  string       `json:"IDExpirationDate,omitempty"`
 }
 
+type Sex string
+
+const (
+	SexMale   Sex = "M"
+	SexFemale Sex = "F"
+)
+
 type Person struct {
-	FirstName   string `json:"FirstName"`
-	LastName    string `json:"LastName"`
-	Address1    string `json:"Address1,omitempty"`
-	CountryCode string `json:"CountryCode"`
-	StateName   string `json:"StateName,omitempty"`
-	CityName    string `json:"CityName,omitempty"`
-	ZipCode     string `json:"ZipCode,omitempty"`
-	DOB         string `json:"DOB,omitempty"`
-	IDs         []ID   `json:"IDs"`
+	FirstName              string `json:"FirstName"`
+	MiddleName             string `json:"MiddleName,omitempty"`
+	LastName               string `json:"LastName"`
+	SecondLastName         string `json:"SecondLastName,omitempty"`
+	Address1               string `json:"Address1,omitempty"`
+	CountryCode            string `json:"CountryCode"`
+	StateName              string `json:"StateName,omitempty"`
+	CityName               string `json:"CityName,omitempty"`
+	ZipCode                string `json:"ZipCode,omitempty"`
+	DOB                    string `json:"DOB,omitempty"`
+	PhoneNumber            string `json:"PhoneNumber,omitempty"`
+	PrimaryPhoneNumber     string `json:"PrimaryPhoneNumber,omitempty"`
+	PhoneNumberCountryCode string `json:"PhoneNumberCountryCode,omitempty"`
+	Email                  string `json:"Email,omitempty"`
+	Sex                    Sex    `json:"Sex,omitempty"`
+	BirthCityName          string `json:"BirthCityName,omitempty"`
+	BirthCountryCode       string `json:"BirthCountryCode,omitempty"`
+	CitizenshipCountryCode string `json:"CitizenshipCountryCode,omitempty"`
+	AgencyReference        string `json:"AgencyReference,omitempty"`
+	ProfessionID           int    `json:"ProfessionID,omitempty"`
+	PEPTypeID              int    `json:"PEPTypeID,omitempty"`
+	SenderTypeID           int    `json:"SenderTypeID,omitempty"`
+	RelationshipToSenderID int    `json:"RelationshipToSenderID,omitempty"`
+	IDs                    []ID   `json:"IDs"`
 }
 
 type BankAccount struct {
 	AccountType AccountTypeId `json:"AccountType"`
-	Code        string        `json:"Code"`
 	AccountNo   string        `json:"AccountNo"`
+	Code        string        `json:"Code"`
 	Name        string        `json:"Name"`
+	BranchCode  string        `json:"BranchCode"`
 	BranchName  string        `json:"BranchName"`
 }
 
@@ -68,6 +91,12 @@ type CreateIncomingTransactionPayload struct {
 		RateID              RateTypeId `json:"RateID"`
 		PayerCurrencyCode   string     `json:"PayerCurrencyCode"`
 		PaymentCurrencyCode string     `json:"PaymentCurrencyCode"`
+		PercentFee          float64    `json:"PercentFee"`
+		FlatFee             float64    `json:"FlatFee"`
+		OtherFee            float64    `json:"OtherFee"`
+		Tax                 float64    `json:"Tax"`
+		FeesTax             float64    `json:"FeesTax"`
+		Discount            float64    `json:"Discount"`
 	} `json:"AmountAndFees"`
 	Payment struct {
 		PayerBranchReference string        `json:"PayerBranchReference"`
