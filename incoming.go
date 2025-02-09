@@ -99,10 +99,12 @@ type CreateIncomingTransactionPayload struct {
 		Discount            float64    `json:"Discount"`
 	} `json:"AmountAndFees"`
 	Payment struct {
-		PayerBranchReference string        `json:"PayerBranchReference"`
-		PaymentTypeID        PaymentTypeId `json:"PaymentTypeID"`
-		BankAccount          *BankAccount  `json:"BankAccount,omitempty"`
-		CreationDate         Time          `json:"CreationDate"`
+		PayerBranchReference    string        `json:"PayerBranchReference"`
+		PaymentTypeID           PaymentTypeId `json:"PaymentTypeID"`
+		PaymentProcessorCode    string        `json:"PaymentProcessorCode,omitempty"`
+		PaymentConfirmationCode string        `json:"PaymentConfirmationCode,omitempty"`
+		BankAccount             *BankAccount  `json:"BankAccount,omitempty"`
+		CreationDate            Time          `json:"CreationDate"`
 	} `json:"Payment"`
 }
 
