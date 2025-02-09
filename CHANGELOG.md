@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.6.0...v0.7.0) (2025-02-09)
+
+
+### Features
+
+* payemnt processor ([86543be](https://www.github.com/brokeyourbike/belmoney-api-client-go/commit/86543bed37a92d7cc3d5f8aee18aa39b6a9bcbda))
+
 ## [0.6.0](https://www.github.com/brokeyourbike/belmoney-api-client-go/compare/v0.5.1...v0.6.0) (2024-12-19)
 
 
