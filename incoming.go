@@ -14,6 +14,8 @@ type IncomingClient interface {
 	AddSenderDocuments(ctx context.Context, documentsPayload AddSenderDocumentsPayload) (AddSenderDocumentsResponse, error)
 	RatesAndFeesList(ctx context.Context) (RatesAndFeesListResponse, error)
 	PayerNetworkList(ctx context.Context, payerId int) (PayerNetworkListResponse, error)
+	PreRegister(ctx context.Context, payload PreRegisterIncomingTransactionPayload) (PreRegisterIncomingTransactionResponse, error)
+	Confirm(ctx context.Context, payload ConfirmIncomingTransactionPayload) (ConfirmIncomingTransactionResponse, error)
 }
 
 var _ IncomingClient = (*client)(nil)
@@ -282,6 +284,84 @@ func (c *client) PayerNetworkList(ctx context.Context, payerID int) (data PayerN
 	}
 
 	req, err := c.newRequest(ctx, http.MethodPost, "/PayerNetworkList", payerNetworkListPayload{PayerID: payerID})
+	if err != nil {
+		return data, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	req.DecodeTo(&data)
+	req.ExpectStatus(http.StatusOK)
+	return data, c.do(ctx, req)
+}
+
+type PreRegisterIncomingTransactionPayload struct {
+	Reference        string           `json:"Reference"`
+	TransferID       string           `json:"TransferID"`
+	TransferPIN      string           `json:"TransferPIN"`
+	TransferReasonID TransferReasonId `json:"TransferReasonID"`
+	Sender           Person           `json:"Sender"`
+	Beneficiary      Person           `json:"Beneficiary"`
+	AmountAndFees    struct {
+		PaymentAmount       float64    `json:"PaymentAmount"`
+		OriginalAmount      float64    `json:"OriginalAmount"`
+		Rate                float64    `json:"Rate"`
+		RateID              RateTypeId `json:"RateID"`
+		PayerCurrencyCode   string     `json:"PayerCurrencyCode"`
+		PaymentCurrencyCode string     `json:"PaymentCurrencyCode"`
+		PercentFee          float64    `json:"PercentFee"`
+		FlatFee             float64    `json:"FlatFee"`
+		OtherFee            float64    `json:"OtherFee"`
+		Tax                 float64    `json:"Tax"`
+		FeesTax             float64    `json:"FeesTax"`
+		Discount            float64    `json:"Discount"`
+	} `json:"AmountAndFees"`
+	Payment struct {
+		PayerBranchReference    string        `json:"PayerBranchReference"`
+		PaymentTypeID           PaymentTypeId `json:"PaymentTypeID"`
+		PaymentProcessorCode    string        `json:"PaymentProcessorCode,omitempty"`
+		PaymentConfirmationCode string        `json:"PaymentConfirmationCode,omitempty"`
+		BankAccount             *BankAccount  `json:"BankAccount,omitempty"`
+		CreationDate            Time          `json:"CreationDate"`
+	} `json:"Payment"`
+}
+
+type PreRegisterIncomingTransactionResponse struct {
+	BaseReponse
+	Reference   string   `json:"Reference"`
+	TransferPIN string   `json:"TransferPIN"`
+	TransferID  string   `json:"TransferID"`
+	StatusID    StatusId `json:"StatusID"`
+}
+
+func (c *client) PreRegister(ctx context.Context, payload PreRegisterIncomingTransactionPayload) (data PreRegisterIncomingTransactionResponse, err error) {
+	req, err := c.newRequest(ctx, http.MethodPost, "/PreRegister", payload)
+	if err != nil {
+		return data, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	req.DecodeTo(&data)
+	req.ExpectStatus(http.StatusOK)
+	return data, c.do(ctx, req)
+}
+
+type ConfirmIncomingTransactionPayload struct {
+	Reference       string `json:"Reference"`
+	TransferPayment struct {
+		PaymentTypeID           PaymentTypeId `json:"PaymentTypeID"`
+		PaymentProcessorCode    string        `json:"PaymentProcessorCode"`
+		PaymentConfirmationCode string        `json:"PaymentConfirmationCode"`
+	} `json:"TransferPayment"`
+}
+
+type ConfirmIncomingTransactionResponse struct {
+	BaseReponse
+	Reference   string   `json:"Reference"`
+	TransferPIN string   `json:"TransferPIN"`
+	TransferID  string   `json:"TransferID"`
+	StatusID    StatusId `json:"StatusID"`
+}
+
+func (c *client) Confirm(ctx context.Context, payload ConfirmIncomingTransactionPayload) (data ConfirmIncomingTransactionResponse, err error) {
+	req, err := c.newRequest(ctx, http.MethodPost, "/Confirm", payload)
 	if err != nil {
 		return data, fmt.Errorf("failed to create request: %w", err)
 	}
